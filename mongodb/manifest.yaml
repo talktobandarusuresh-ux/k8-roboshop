@@ -27,6 +27,9 @@ spec:
       containers:
       - name: mongodb
         image: talktosureshbandaru/mongodb:v1
+        args:
+        - "--bind_ip_all"
+
         #image: talktosureshbandaru/mongodb:v1
         imagePullPolicy: Always
         readinessProbe:
