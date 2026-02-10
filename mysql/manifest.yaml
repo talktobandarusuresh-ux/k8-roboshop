@@ -1,21 +1,22 @@
 apiVersion: v1
 kind: ConfigMap
-metadata:
+metadata: 
   name: mysql
-  namespace: roboshop
-data:
+  namespace: safety
+data: 
   my.cnf: |
     [mysqld]
     innodb_redo_log_capacity = 2G
 ---
-apiVersion: apps/v1
+
+apiVersion: apps/v1 
 kind: Deployment
 metadata:
   name: mysql
-  namespace: roboshop
-  # these are replica set labels
+  namespace: safety
+# these are deployment labels
   labels:
-    project: roboshop
+    project: safety
     component: mysql
     tier: db
 spec:
@@ -23,52 +24,52 @@ spec:
   selector:
     # these labels are used to select pods
     matchLabels:
-      project: roboshop
+      project: safety
       component: mysql
       tier: db
-  # pod definition
-  template:
+    # pod definitdion
+  template: 
     metadata:
       labels:
-        project: roboshop
+        project: safety
         component: mysql
         tier: db
     spec:
       containers:
       - name: mysql
-        image: talktosureshbandaru/mysql:v2
+        image: hanvihanshith/mysql:v1
         imagePullPolicy: Always
         # readinessProbe:
         #   tcpSocket:
         #     port: 3306
-        #   initialDelaySeconds: 120
+        #   initialDelaySeconds: 20
         #   periodSeconds: 10
         # livenessProbe:
         #   tcpSocket:
         #     port: 3306
-        #   initialDelaySeconds: 150
-        #   periodSeconds: 5
+        #   initialDelaySeconds: 15
+        #   periodSeconds: 10
         volumeMounts:
         - name: mysql-config
           mountPath: /etc/mysql/conf.d/my.cnf
           subPath: my.cnf
-
       volumes:
-        - name: mysql-config
-          configMap:
-            name: mysql
+       - name: mysql-config
+         configMap:
+          name: mysql
+
 ---
-apiVersion: v1
+apiVersion: v1 
 kind: Service
-metadata:
+metadata: 
   name: mysql
-  namespace: roboshop
+  namespace: safety
 spec:
   selector:
-    project: roboshop
+    project: safety
     component: mysql
     tier: db
   ports:
     - protocol: TCP
-      port: 3306 # service port
-      targetPort: 3306 # container port
+      port: 3306 ## services port
+      targetPort: 3306 ## container port
