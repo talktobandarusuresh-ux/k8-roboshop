@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata: 
   name: mysql
-  namespace: safety
+  namespace: roboshop
 data: 
   my.cnf: |
     [mysqld]
@@ -13,10 +13,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mysql
-  namespace: safety
+  namespace: roboshop
 # these are deployment labels
   labels:
-    project: safety
+    project: roboshop
     component: mysql
     tier: db
 spec:
@@ -24,14 +24,14 @@ spec:
   selector:
     # these labels are used to select pods
     matchLabels:
-      project: safety
+      project: roboshop
       component: mysql
       tier: db
     # pod definitdion
   template: 
     metadata:
       labels:
-        project: safety
+        project: roboshop
         component: mysql
         tier: db
     spec:
@@ -63,10 +63,10 @@ apiVersion: v1
 kind: Service
 metadata: 
   name: mysql
-  namespace: safety
+  namespace: roboshop
 spec:
   selector:
-    project: safety
+    project: roboshop
     component: mysql
     tier: db
   ports:
